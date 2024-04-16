@@ -5,8 +5,8 @@ class Game < ApplicationRecord
     attribute :current_player, default: -> { ["X", "O"].sample }
 
     def state
-        return :x_wins if victory_for("x")
-        return :y_wins if victory_for("y")
+        return :x_wins if victory_for("X")
+        return :o_wins if victory_for("O")
         return :draw if board.none? { |a| a.nil? }
         :in_play 
     end
@@ -16,8 +16,8 @@ class Game < ApplicationRecord
             "Game is drawn"    
         elsif state == :x_wins 
             "X has won"
-        elsif state == :y_wins
-            "Y has won"
+        elsif state == :o_wins
+            "O has won"
         end
     end
 
@@ -26,7 +26,7 @@ class Game < ApplicationRecord
 
         board[index] = current_player
 
-        self.current_player = current_player == "x" ? "y" : "x"
+        self.current_player = current_player == "X" ? "O" : "X"
 
         save!
     end

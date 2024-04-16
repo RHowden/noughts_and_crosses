@@ -9,95 +9,95 @@ class GameTest < ActiveSupport::TestCase
   test "game state should be stalemate when all moves taken" do
     game = Game.new
     game.board = [
-      "x", "y", "x", 
-      "y", "y", "x", 
-      "x", "x", "y"]
+      "X", "O", "X", 
+      "O", "O", "X", 
+      "X", "X", "O"]
     assert_equal :draw, game.state
   end
 
-  test "horizontal line on first row should win the game for x" do
+  test "horizontal line on first row should win the game for X" do
     game = Game.new
     game.board = [
-      "x", "x", "x", 
-      "y", "y", nil, 
+      "X", "X", "X", 
+      "O", "O", nil, 
       nil, nil, nil]
     assert_equal :x_wins, game.state
   end
 
-  test "horizontal line on second row should win the game for x" do
+  test "horizontal line on second row should win the game for X" do
     game = Game.new
     game.board = [
       nil, nil, nil, 
-      "x", "x", "x", 
-      "y", "y", nil]
+      "X", "X", "X", 
+      "O", "O", nil]
     assert_equal :x_wins, game.state
   end
 
-  test "horizontal line should win the game for y" do
+  test "horizontal line should win the game for O" do
     game = Game.new
     game.board = [
       nil, nil, nil,
-      "y", "y", "y", 
-      "x", "x", nil
+      "O", "O", "O", 
+      "X", "X", nil
       ]
-    assert_equal :y_wins, game.state
+    assert_equal :o_wins, game.state
   end
 
-  test "vertical line on first column should win the game for x" do
+  test "vertical line on first column should win the game for X" do
     game = Game.new
     game.board = [
-      "x", "y", nil, 
-      "x", "y", nil, 
-      "x", nil, nil
+      "X", "O", nil, 
+      "X", "O", nil, 
+      "X", nil, nil
     ]
     assert_equal :x_wins, game.state
   end
 
-  test "vertical line on second column should win the game for x" do
+  test "vertical line on second column should win the game for X" do
     game = Game.new
     game.board = [
-      "y", "x", nil, 
-      "y", "x", nil, 
-      nil, "x", :nil]
+      "O", "X", nil, 
+      "O", "X", nil, 
+      nil, "X", :nil]
     assert_equal :x_wins, game.state
   end
 
-  test "vertical line should win the game for y" do
+  test "vertical line should win the game for O" do
     game = Game.new
     game.board = [
-      nil, "y", "x", 
-      nil, "y", "x", 
-      nil, "y", nil]
-    assert_equal :y_wins, game.state
+      nil, "O", "X", 
+      nil, "O", "X", 
+      nil, "O", nil]
+    assert_equal :o_wins, game.state
   end
 
-  test "diagonal line should win the game for x" do
+  test "diagonal line should win the game for X" do
     game = Game.new
     game.board = [
-      "x", "y", nil, 
-      "y", "x", nil, 
-      "x", nil, "x"
+      "X", "O", nil, 
+      "O", "X", nil, 
+      "X", nil, "X"
     ]
     assert_equal :x_wins, game.state
   end
 
-  test "diagonal line should win the game for y" do
+  test "diagonal line should win the game for O" do
     game = Game.new
     game.board = [
-      nil, "x", "y", 
-      "x", "y", nil, 
-      "y", "x", :nil]
-    assert_equal :y_wins, game.state
+      nil, "X", "O", 
+      "X", "O", nil, 
+      "O", "X", :nil]
+    assert_equal :o_wins, game.state
   end
 
   test "move should not change board when game is stalemate" do
     initial_board = [
-      "x", "y", "x", 
-      "y", "y", "x", 
-      "x", "x", "y"]
+      "X", "O", "X", 
+      "O", "O", "X", 
+      "X", "X", "O"]
     game = Game.new
     game.board = initial_board
-    game.current_player = "y"
+    game.current_player = "O"
 
     game.move!(0)
      assert_equal initial_board, game.board
@@ -106,23 +106,23 @@ class GameTest < ActiveSupport::TestCase
   test "move should not change current player when game is stalemate" do
     game = Game.new
     game.board = [
-      "x", "y", "x", 
-      "y", "y", "x", 
-      "x", "x", "y"]
-    game.current_player = "y"
+      "X", "O", "X", 
+      "O", "O", "X", 
+      "X", "X", "O"]
+    game.current_player = "O"
 
     game.move!(0)
-     assert_equal "y", game.current_player
+     assert_equal "O", game.current_player
   end
 
   test "move should not change board when game is won" do
     initial_board = [
-      "y", "y", "y", 
-      "x", nil, "x", 
+      "O", "O", "O", 
+      "X", nil, "X", 
       nil, nil, nil]
     game = Game.new
     game.board = initial_board
-    game.current_player = "y"
+    game.current_player = "O"
 
     game.move!(0)
     assert_equal initial_board, game.board
@@ -131,31 +131,31 @@ class GameTest < ActiveSupport::TestCase
   test "move should not change current player when game is won" do
     game = Game.new
     game.board = [
-      "y", "y", "y", 
-      "x", nil,"x", 
+      "O", "O", "O", 
+      "X", nil,"X", 
       nil, nil, nil]
-    game.current_player = "y"
+    game.current_player = "O"
 
     game.move!(0)
-    assert_equal "y", game.current_player
+    assert_equal "O", game.current_player
   end
 
   test "move should update board" do
     game = Game.new
-    game.current_player = "y"
+    game.current_player = "O"
 
     game.move!(0)
 
-    expected = ["y"] + 8.times.collect { nil}
+    expected = ["O"] + 8.times.collect { nil}
     assert_equal expected, game.reload.board
   end
 
   test "move should update current_player" do
     game = Game.new
-    game.current_player = "y"
+    game.current_player = "O"
 
     game.move!(0)
 
-    assert_equal "x", game.reload.current_player
+    assert_equal "X", game.reload.current_player
   end
 end

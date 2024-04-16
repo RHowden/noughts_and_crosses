@@ -7,13 +7,20 @@
                 <% if @game.board[index].present? %>
                     <%= @game.board[index] %>
                 <% else %>
-                    Add Button here
+                    <%= button_to "", 
+                        game_move_index_path(@game),
+                        params: {index: index},
+                        form: {style: 'display:inline-block;'} %>
                 <% end %>
 
                 <% index += 1 %>
             </span>
         <% end %>
     </div>
+<% end %>
+
+<% if @game.state_label %>
+ <%= @game.state_label %>
 <% end %>
 
 

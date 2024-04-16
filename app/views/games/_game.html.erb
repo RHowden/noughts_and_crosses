@@ -1,0 +1,20 @@
+<% index = 0 %>
+
+<% 3.times do %>
+    <div class="row">
+        <% 3.times do %>
+            <span>
+                <% if @game.board[index].present? %>
+                    <%= @game.board[index] %>
+                <% else %>
+                    Add Button here
+                <% end %>
+
+                <% index += 1 %>
+            </span>
+        <% end %>
+    </div>
+<% end %>
+
+
+

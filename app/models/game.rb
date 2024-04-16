@@ -4,6 +4,8 @@ class Game < ApplicationRecord
     attribute :board, default: -> { 9.times.collect { nil } }
     attribute :current_player, default: -> { ["X", "O"].sample }
 
+    after_update_commit :broadcast_refresh 
+    
     def state
         return :x_wins if victory_for("X")
         return :o_wins if victory_for("O")
